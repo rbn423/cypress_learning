@@ -1,0 +1,12 @@
+apuntes para usar cypress
+
+- npm init
+- npm install cypress --save-dev -> instala cypress en los modules de node
+- node_modules/.bin/cypress open -> lanza cypress
+
+- para seleccionar elementos [nombreElemento = Valor]
+- bajar una extensión de chrome para tener xpath
+- tambien se puede usar copy-selector
+- con los xpath se pueden usar and y or para seleccionar varios selectores
+- tambien se puede usar el xpath por texto, de forma que se puede seleccionar un div por ejemplo con el texto del div
+- tambien se puede usar contains en el texto del xpath
