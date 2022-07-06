@@ -146,7 +146,7 @@ describe("section 1", ()=> {
         cy.get('[id="wsf-1-field-36-row-2"]').check({force:true})
     })
 
-    it.only("Test radio-buttons", () => {
+    it("Test radio-buttons", () => {
         cy.visit('https://testingqarvn.com.es/radio-buttons/')
         cy.title().should("eq","Radio Buttons | TestingQaRvn")
         for(var i = 1; i < 4; i++){
@@ -156,5 +156,232 @@ describe("section 1", ()=> {
         }
     })
 
+    it("Test select", () => {
+        cy.visit('https://testingqarvn.com.es/combobox/')
+        cy.title().should("eq","ComboBox | TestingQaRvn")
+        cy.get('#wsf-1-field-53').should("be.visible").select("Mac").should("have.value", "Mac")
+        cy.wait(1500)
+        cy.get('#wsf-1-field-53').should("be.visible").select("Linux").should("have.value", "Linux")
+    })
+
+    it("Test select autocompletado", () => {
+        cy.visit('https://google.com/')
+        cy.title().should("eq","Google")
+        cy.get('#L2AGLb > .QS5gu').click()
+        cy.get('.gLFyf').should("be.visible").type("ferrari").click().type("{enter}")
+    })
+
+    it("Test select multiple", () => {
+        cy.visit('https://demo.anhtester.com/basic-select-dropdown-demo.html')
+        cy.title().should("eq","Selenium Easy Demo - Automate All Scenarios")
+        cy.get('#multi-select').should("be.visible").select(["California", "Florida", "Ohio"]).then(()=>{
+            cy.get('#printMe').should("be.visible").click()
+        })
+    })
+
+    it("Test select prueba", () => {
+        cy.visit('https://demo.anhtester.com/jquery-dual-list-box-demo.html')
+        cy.title().should("eq","Selenium Easy - JQuery Dual List Box Demo")
+        cy.get(':nth-child(1) > .form-control').should("be.visible").select(["Sophia", "Alice", "Laura"]).then(() => {
+            cy.get('.pAdd').should("be.visible").click().then(() => {
+                cy.get('.pAddAll').should("be.visible").click().then(() => {
+                    cy.get(':nth-child(3) > .form-control').should("be.visible").select(["Laura", "Valentina"]).then(() => {
+                        cy.get('.pRemove').should("be.visible").click().then(() => {
+                            cy.get('.pRemoveAll').should("be.visible").click()
+                        })
+                    })
+                })
+            })
+        })
+    })
+
+    it("Test assert contains", () => {
+        cy.visit('http://automationpractice.com/index.php')
+        cy.title().should("eq","My Store")
+        cy.wait(1000)
+        cy.get('[id="block_top_menu"]').contains("Women").click()
+    })
+
+    it("Test assert find", () => {
+        cy.visit('http://automationpractice.com/index.php')
+        cy.title().should("eq","My Store")
+        cy.wait(1000)
+        cy.get('[id="block_top_menu"]').contains("Women").click()
+        cy.get(".product-container").find(".product-image-container").eq(2).click() //selecciona el tercer elemento de la clase que coincide
+    })
+
+    it("Test assert busqueda de palabras en un campo", () => {
+        cy.visit('http://automationpractice.com/index.php')
+        cy.title().should("eq","My Store")
+        cy.get('[id="block_top_menu"]').contains("Women").click()
+        cy.get(".product-container").find(".product-image-container").eq(2).click() //selecciona el tercer elemento de la clase que coincide
+        cy.get('#product_condition > .editable').then((e) => {
+            //cy.log(e.text())
+            let estado = e.text()
+            if (estado == "New")
+                cy.log("El vestido es nuevo")
+        })
+        cy.get('#our_price_display').then((e) => {
+            let precio = e.text()
+            precio = precio.slice(1)
+            if (precio > 30)
+                cy.log("el vestido sale de presupuesto")
+            else{
+                cy.log("el vestido esta en el presupuesto")
+                cy.get('.exclusive > span').click()
+            }
+        })
+    })
+
+    it("Test assert have/contain", () => {
+        cy.visit('https://computer-database.gatling.io/computers')
+        cy.title().should("eq","Computers database")
+        cy.wait(1500)
+
+        //search
+        cy.xpath("//*[contains(@id, 'searchbox')]").should("be.visible").type("ACE")
+        cy.get('#searchsubmit').should("be.visible").click()
+
+        //add
+        cy.get('#add').should("be.visible").click()
+        cy.get('#name').should("be.visible").type("cypress").tab().
+        type("2022-12-01").tab().type("2022-12-12")
+        cy.get('#company').should("be.visible").select("Nokia").should("have.value", "16")
+        cy.get('.primary').should("be.visible").click()
+
+        //validamos que el campo contiene el nombre que queremos
+        cy.get('.alert-message').should("have.text", "Done !  Computer cypress has been created") //have tiene que tener el texto entero
+        cy.get('.alert-message').should("contain", "Computer cypress has been created")
+    })
+
+    it("Test assert validate/contain", () => {
+        cy.visit('https://computer-database.gatling.io/computers')
+        cy.title().should("eq","Computers database")
+        cy.wait(1500)
+
+        //search
+        cy.xpath("//*[contains(@id, 'searchbox')]").should("be.visible").type("ACE")
+        cy.get('#searchsubmit').should("be.visible").click()
+
+        //add
+        cy.get('#add').should("be.visible").click()
+        cy.get('#name').should("be.visible").type("cypress")
+        cy.get('#name').should("have.value", "cypress").then(() => {
+            cy.get('#introduced').type("2022-12-01")
+            cy.get('#discontinued').type("2022-12-12")
+            cy.get('#company').should("be.visible").select("Nokia").should("have.value", "16")
+            cy.get('.primary').should("be.visible").click()
+        })
+
+        //validamos que el campo contiene el nombre que queremos
+        cy.get('.alert-message').should("have.text", "Done !  Computer cypress has been created") //have tiene que tener el texto entero
+        cy.get('.alert-message').should("contain", "Computer cypress has been created")
+    })
+
+    it("Test assert have-class", () => {
+        cy.visit('https://computer-database.gatling.io/computers')
+        cy.title().should("eq","Computers database")
+        cy.wait(1500)
+
+        //search
+        cy.xpath("//*[contains(@id, 'searchbox')]").should("be.visible").type("ACE")
+        cy.get('#searchsubmit').should("be.visible").should("have.class", "btn primary")
+        cy.get('#searchsubmit').should("be.visible").should("not.have.class", "wrong class")
+    })
+
+    it("Test assert and", () => {
+        cy.visit('https://computer-database.gatling.io/computers')
+        cy.title().should("eq","Computers database")
+        cy.wait(1500)
+
+        //search
+        cy.xpath("//*[contains(@id, 'searchbox')]").should("be.visible").type("ACE")
+        cy.get('#searchsubmit').should("be.visible").and("have.class", "btn primary")
+        cy.get('#searchsubmit').should("be.visible").and("not.have.class", "wrong class")
+    })
     
+    it("Test assert length y css", () => {
+        cy.visit('https://demo.anhtester.com/table-pagination-demo.html')
+        cy.title().should("eq","Selenium Easy - Table with Pagination Demo")
+        
+        cy.get("#myTable >tr").should("have.length", 13) //con el >tr cogemos cada una de las filas dentro del id
+        cy.get("#myTable >tr >td").should("have.length", 91).and("have.css", "padding", "8px") //para ver cantidad de elementos (celdas)
+    })
+    
+    it("Test assert contains por inicio", () => {
+        let tiempo = 1500
+
+        cy.visit('https://demo.anhtester.com/basic-first-form-demo.html')
+        cy.title().should("eq","Selenium Easy Demo - Simple Form to Automate using Selenium")
+        cy.wait(tiempo)
+
+        //closing window
+        cy.get('.at-cm-no-button').should("be.visible").click({force:true})
+
+        cy.get('.form-group > #user-message').should("be.visible").type("demo del contenido")
+        cy.contains('[type="button"]', "Show Message").should("be.visible").click() //Para encontrar elementos que puede que se repitan en la misma pagina
+        cy.get('#display').should("have.text", "demo del contenido")
+    })
+
+    it("Reto asserts", () => {
+        let tiempo = 1500
+
+        cy.visit('https://demo.anhtester.com/basic-first-form-demo.html')
+        cy.title().should("eq","Selenium Easy Demo - Simple Form to Automate using Selenium")
+        cy.wait(tiempo)
+
+        //closing window
+        cy.get('.at-cm-no-button').should("be.visible").click({force:true})
+
+        let a = 10
+        let b = 20
+
+        cy.get('#sum1').should("be.visible").and("have.class", "form-control").type(a)
+        cy.get('#sum2').should("be.visible").and("have.class", "form-control").type(b)
+        cy.contains('[type="button"]', "Get Total").click()
+
+        cy.get('#displayvalue').should("be.visible").then((e) => {
+            let result = parseInt(e.text())
+            cy.log(result)
+            if (result == a+b)
+                cy.log("Resultado correcto")
+            else
+                cy.log("Resultado incorrecto")
+        })
+    })
+
+    it.only("Reto asserts invoke", () => {
+        let tiempo = 1500
+
+        cy.visit('https://demo.anhtester.com/basic-first-form-demo.html')
+        cy.title().should("eq","Selenium Easy Demo - Simple Form to Automate using Selenium")
+        cy.wait(tiempo)
+
+        //closing window
+        cy.get('.at-cm-no-button').should("be.visible").click({force:true})
+
+        let a = 10
+        let b = 20
+
+        cy.get('#sum1').invoke("attr", "placeholder").should("contain", "Enter value").then(() => { //comprueba con invoke que el atributo tiene un valor
+            cy.get("#sum1").type(a)
+            cy.get("#sum1").invoke("attr", "style", "color:blue") //con invoke se cambia el color del atributo
+        })
+        cy.get('#sum2').invoke("attr", "placeholder").should("contain", "Enter value").then(() => {
+            cy.get("#sum2").type(b)
+            cy.get("#sum2").invoke("attr", "style", "color:red")
+        })
+        cy.contains('[type="button"]', "Get Total").click().then(() => {
+            cy.get('#displayvalue').invoke("attr", "style", "color: yellow")
+        })
+
+        cy.get('#displayvalue').should("be.visible").then((e) => {
+            let result = parseInt(e.text())
+            cy.log(result)
+            if (result == a+b)
+                cy.log("Resultado correcto")
+            else
+                cy.log("Resultado incorrecto")
+        })
+    })
 }) //closing describe
