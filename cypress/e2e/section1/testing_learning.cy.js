@@ -2,6 +2,7 @@
 
 require("cypress-plugin-tab")
 require("cypress-xpath")
+import "cypress-file-upload"
 
 describe("section 1", ()=> {
     it("My first test -> hola mundo", () => {
@@ -350,7 +351,7 @@ describe("section 1", ()=> {
         })
     })
 
-    it.only("Reto asserts invoke", () => {
+    it("Reto asserts invoke", () => {
         let tiempo = 1500
 
         cy.visit('https://demo.anhtester.com/basic-first-form-demo.html')
@@ -383,5 +384,56 @@ describe("section 1", ()=> {
             else
                 cy.log("Resultado incorrecto")
         })
+    })
+
+    it("windows propiedad charset", () => {
+        cy.visit("https://testsheepnz.github.io/BasicCalculator.html")
+        cy.title().should("eq","Basic Calculator")
+        cy.wait(1500)
+
+        cy.document().should("have.property", "charset").and("eq", "UTF-8")
+    })
+
+    it("windows validar nombre url", () => {
+        cy.visit("https://testsheepnz.github.io/BasicCalculator.html")
+        cy.title().should("eq","Basic Calculator")
+        cy.wait(1500)
+
+        cy.url().should("include", "BasicCalculator.html")
+        cy.url().should("eq", "https://testsheepnz.github.io/BasicCalculator.html")
+    })
+
+
+    it("configuracion tamaño ventana", () => {
+        cy.visit("https://testsheepnz.github.io/BasicCalculator.html")
+        cy.title().should("eq","Basic Calculator")
+        cy.wait(1500)
+
+        cy.viewport("iphone-x")
+        cy.wait(2000)
+        cy.viewport("ipad-2")
+        cy.wait(2000)
+        cy.viewport("iphone-3")
+        cy.wait(2000)
+        cy.viewport("samsung-note9")
+        cy.wait(2000)
+        cy.viewport("macbook-16")
+    })
+
+    it("upload files", () => {
+        cy.visit("https://testingqarvn.com.es/upload-files")
+        cy.title().should("eq","Upload Files | TestingQaRvn")
+        cy.wait(1500)
+
+        const ruta="azul.png"
+        cy.get('#wsf-1-field-94').attachFile(ruta)
+        cy.wait(2000)
+    })
+
+    it.only("mouse dragAndDrop", () => {
+        let tiempo = 1000
+        cy.visit("https://the-internet.herokuapp.com/drag_and_drop")
+        cy.title().should("eq","The Internet")
+        cy.wait(1500)
     })
 }) //closing describe

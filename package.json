@@ -9,7 +9,9 @@
   "author": "ruben",
   "license": "ISC",
   "devDependencies": {
-    "cypress": "^10.1.0",
+    "@4tw/cypress-drag-drop": "^2.2.1",
+    "cypress": "^10.4.0",
+    "cypress-file-upload": "^5.0.8",
     "cypress-plugin-tab": "^1.0.5",
     "cypress-xpath": "^2.0.0"
   }

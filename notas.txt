@@ -10,3 +10,10 @@ apuntes para usar cypress
 - con los xpath se pueden usar and y or para seleccionar varios selectores
 - tambien se puede usar el xpath por texto, de forma que se puede seleccionar un div por ejemplo con el texto del div
 - tambien se puede usar contains en el texto del xpath
+- con la función cy.viewport se puede configura el tamaño del dispositivo que se pretende testear, por ejemplo la pantalla de un iphone
+- para lanzar los tests desde consola se puede ejecutar el comando node_modules/.bin/cypress run y ejecuta todos los tests que hay en e2e por consola.
+- .\node_modules\.bin\cypress run headed los lanza en navegador
+- .\node_modules\.bin\cypress run browser chrome lanza en chrome
+- .\node_modules\.bin\cypress run --spec "cypress/e2e/section1/testing_learning.cy.js" lanza el fichero en concreto que queremos o apuntando a la carpeta si queremos que se ejecuten todos los de la carpeta con *
+- para poder testear la subida de archivos existe un plugin de cypress que se instala asi "npm install --save-dev cypress-file-upload"
+- para arrastrar objetos con el mouse está el modulo "cypress-drag-drop" -> npm install --save-dev @4tw/cypress-drag-drop
