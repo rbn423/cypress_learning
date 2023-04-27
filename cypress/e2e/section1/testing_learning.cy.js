@@ -3,6 +3,7 @@
 require("cypress-plugin-tab")
 require("cypress-xpath")
 import "cypress-file-upload"
+require("@4tw/cypress-drag-drop")
 
 describe("section 1", ()=> {
     it("My first test -> hola mundo", () => {
@@ -430,10 +431,46 @@ describe("section 1", ()=> {
         cy.wait(2000)
     })
 
-    it.only("mouse dragAndDrop", () => {
+    it("mouse dragAndDrop", () => {
         let tiempo = 1000
         cy.visit("https://the-internet.herokuapp.com/drag_and_drop")
         cy.title().should("eq","The Internet")
         cy.wait(1500)
+
+        cy.get('#column-a').drag("#column-b")
     })
+
+    it("mouse dragAndDrop2", () => {
+        let tiempo = 1000
+        cy.visit("https://demo.anhtester.com/drag-and-drop-demo.html")
+        cy.title().should("eq","Selenium Easy Demo - Drag and Drop Demo")
+        cy.wait(1500)
+
+        cy.get('#todrag > :nth-child(2)').drag("#mydropzone",{force:true})
+        cy.get('#todrag > :nth-child(3)').drag("#mydropzone",{force:true})
+        cy.get('#todrag > :nth-child(4)').drag("#mydropzone",{force:true})
+        cy.get('#todrag > :nth-child(5)').drag("#mydropzone",{force:true})
+    })
+
+    it("mouse over", () => {
+        let tiempo = 1000
+        cy.visit("http://way2automation.com")
+        cy.title().should("eq","Get Online Selenium Certification Course | Way2Automation")
+
+        cy.contains("Selenium").trigger("mouseover")
+        cy.wait(1000)
+
+        cy.contains("Selenium Python Video Tutorials").invoke("removeAttr","target").click()
+    })
+
+    it.only("mouse slider", () => {
+        let tiempo = 1000
+        cy.visit("https://demo.anhtester.com/drag-drop-range-sliders-demo.html")
+        cy.title().should("eq","Selenium Easy - Drag and Drop Range Sliders")
+
+        cy.get('#slider1 > .range > input').invoke("attr","value","80")
+        cy.get('#slider3 > .range > input').invoke("attr","value","0")
+        cy.get('#slider2 > .range > input').invoke("attr","value","90")
+        cy.get('#slider4 > .range > input').invoke("attr","value","90")
+    }) 
 }) //closing describe
